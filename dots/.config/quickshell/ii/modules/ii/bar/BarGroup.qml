@@ -6,9 +6,16 @@ Item {
     id: root
     property bool vertical: false
     property real padding: 5
+    property bool showBackground: !Config.options?.bar.borderless
     implicitWidth: vertical ? Appearance.sizes.baseVerticalBarWidth : (gridLayout.implicitWidth + padding * 2)
     implicitHeight: vertical ? (gridLayout.implicitHeight + padding * 2) : Appearance.sizes.baseBarHeight
     default property alias items: gridLayout.children
+
+    BarShadow {
+        target: background
+        visible: BarStyle.shadowVisible && root.showBackground
+        z: -1
+    }
 
     Rectangle {
         id: background
@@ -19,7 +26,7 @@ Item {
             leftMargin: root.vertical ? 4 : 0
             rightMargin: root.vertical ? 4 : 0
         }
-        color: Config.options?.bar.borderless ? "transparent" : Appearance.colors.colLayer1
+        color: root.showBackground ? BarStyle.groupBackground : "transparent"
         radius: Appearance.rounding.small
     }
 

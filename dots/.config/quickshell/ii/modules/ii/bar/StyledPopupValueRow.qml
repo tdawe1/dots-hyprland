@@ -8,18 +8,18 @@ RowLayout {
     required property string icon
     required property string label
     required property string value
-    spacing: 4
+    spacing: 4 * Appearance.uiScale
 
     MaterialSymbol {
         text: root.icon
         color: Appearance.colors.colOnSurfaceVariant
         iconSize: Appearance.font.pixelSize.large
     }
-    StyledText {
+    BarText {
         text: root.label
         color: Appearance.colors.colOnSurfaceVariant
     }
-    StyledText {
+    BarText {
         Layout.fillWidth: true
         horizontalAlignment: Text.AlignRight
         visible: root.value !== ""

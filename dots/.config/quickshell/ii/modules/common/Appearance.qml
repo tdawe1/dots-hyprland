@@ -14,6 +14,7 @@ Singleton {
     property QtObject font
     property QtObject sizes
     property string syntaxHighlightingTheme
+    property real uiScale: Config?.options.appearance.uiScale ?? 1
 
     // Transparency. The quadratic functions were derived from analysis of hand-picked transparency values.
     ColorQuantizer {
@@ -199,16 +200,16 @@ Singleton {
     }
 
     rounding: QtObject {
-        property int unsharpen: 2
-        property int unsharpenmore: 6
-        property int verysmall: 8
-        property int small: 12
-        property int normal: 17
-        property int large: 23
-        property int verylarge: 30
+        property int unsharpen: Math.round(2 * root.uiScale)
+        property int unsharpenmore: Math.round(6 * root.uiScale)
+        property int verysmall: Math.round(8 * root.uiScale)
+        property int small: Math.round(12 * root.uiScale)
+        property int normal: Math.round(17 * root.uiScale)
+        property int large: Math.round(23 * root.uiScale)
+        property int verylarge: Math.round(30 * root.uiScale)
         property int full: 9999
         property int screenRounding: large
-        property int windowRounding: 18
+        property int windowRounding: Math.round(18 * root.uiScale)
     }
 
     font: QtObject {
@@ -235,15 +236,15 @@ Singleton {
             })
         }
         property QtObject pixelSize: QtObject {
-            property int smallest: 10
-            property int smaller: 12
-            property int smallie: 13
-            property int small: 15
-            property int normal: 16
-            property int large: 17
-            property int larger: 19
-            property int huge: 22
-            property int hugeass: 23
+            property int smallest: Math.round(10 * root.uiScale)
+            property int smaller: Math.round(12 * root.uiScale)
+            property int smallie: Math.round(13 * root.uiScale)
+            property int small: Math.round(15 * root.uiScale)
+            property int normal: Math.round(16 * root.uiScale)
+            property int large: Math.round(17 * root.uiScale)
+            property int larger: Math.round(19 * root.uiScale)
+            property int huge: Math.round(22 * root.uiScale)
+            property int hugeass: Math.round(23 * root.uiScale)
             property int title: huge
         }
     }
@@ -371,33 +372,33 @@ Singleton {
     }
 
     sizes: QtObject {
-        property real baseBarHeight: 40
+        property real baseBarHeight: 42 * root.uiScale
         property real barHeight: Config.options.bar.cornerStyle === 1 ? 
             (baseBarHeight + root.sizes.hyprlandGapsOut * 2) : baseBarHeight
-        property real barCenterSideModuleWidth: Config.options?.bar.verbose ? 360 : 140
-        property real barCenterSideModuleWidthShortened: 280
-        property real barCenterSideModuleWidthHellaShortened: 190
+        property real barCenterSideModuleWidth: Config.options?.bar.verbose ? 360 * root.uiScale : 140 * root.uiScale
+        property real barCenterSideModuleWidthShortened: 280 * root.uiScale
+        property real barCenterSideModuleWidthHellaShortened: 190 * root.uiScale
         property real barShortenScreenWidthThreshold: 1200 // Shorten if screen width is at most this value
         property real barHellaShortenScreenWidthThreshold: 1000 // Shorten even more...
-        property real elevationMargin: 10
-        property real fabShadowRadius: 5
-        property real fabHoveredShadowRadius: 7
-        property real hyprlandGapsOut: 5
-        property real mediaControlsWidth: 440
-        property real mediaControlsHeight: 160
-        property real notificationPopupWidth: 410
-        property real osdWidth: 180
-        property real searchWidthCollapsed: 210
-        property real searchWidth: 360
-        property real sidebarWidth: 460
-        property real sidebarWidthExtended: 750
-        property real baseVerticalBarWidth: 46
+        property real elevationMargin: 10 * root.uiScale
+        property real fabShadowRadius: 5 * root.uiScale
+        property real fabHoveredShadowRadius: 7 * root.uiScale
+        property real hyprlandGapsOut: 6 * root.uiScale
+        property real mediaControlsWidth: 440 * root.uiScale
+        property real mediaControlsHeight: 160 * root.uiScale
+        property real notificationPopupWidth: 410 * root.uiScale
+        property real osdWidth: 180 * root.uiScale
+        property real searchWidthCollapsed: 210 * root.uiScale
+        property real searchWidth: 360 * root.uiScale
+        property real sidebarWidth: 460 * root.uiScale
+        property real sidebarWidthExtended: 750 * root.uiScale
+        property real baseVerticalBarWidth: 46 * root.uiScale
         property real verticalBarWidth: Config.options.bar.cornerStyle === 1 ? 
             (baseVerticalBarWidth + root.sizes.hyprlandGapsOut * 2) : baseVerticalBarWidth
-        property real wallpaperSelectorWidth: 1200
-        property real wallpaperSelectorHeight: 690
-        property real wallpaperSelectorItemMargins: 8
-        property real wallpaperSelectorItemPadding: 6
+        property real wallpaperSelectorWidth: 1200 * root.uiScale
+        property real wallpaperSelectorHeight: 690 * root.uiScale
+        property real wallpaperSelectorItemMargins: 8 * root.uiScale
+        property real wallpaperSelectorItemPadding: 6 * root.uiScale
     }
 
     syntaxHighlightingTheme: root.m3colors.darkmode ? "Monokai" : "ayu Light"

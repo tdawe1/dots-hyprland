@@ -2,6 +2,7 @@ import QtQuick
 import qs.services
 import qs.modules.common
 import qs.modules.common.widgets
+import qs.modules.ii.bar
 
 Loader {
     id: root
@@ -21,13 +22,17 @@ Loader {
         implicitWidth: root.vertical ? null : layoutCodeText.implicitWidth
         implicitHeight: root.vertical ? layoutCodeText.implicitHeight : null
 
-        StyledText {
+        BarText {
             id: layoutCodeText
             anchors.centerIn: parent
             horizontalAlignment: Text.AlignHCenter
             text: abbreviateLayoutCode(HyprlandXkb.currentLayoutCode)
-            font.pixelSize: text.includes("\n") ? Appearance.font.pixelSize.smallie : Appearance.font.pixelSize.small
-            color: root.color
+            font.pixelSize: text.includes("\n")
+                ? Math.round(Appearance.font.pixelSize.large * 1.4)
+                : Math.round(Appearance.font.pixelSize.huge * 1.6)
+            color: BarStyle.isLight
+                ? ColorUtils.mix(root.color, BarStyle.accentPink, 0.75)
+                : root.color
             animateChange: true
         }
     }
