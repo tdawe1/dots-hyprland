@@ -7,6 +7,12 @@ import qs.modules.common.widgets
 RippleButton {
     id: root
 
+    BarShadow {
+        target: root
+        visible: BarStyle.shadowVisible
+        z: -1
+    }
+
     property bool showPing: false
 
     property bool aiChatEnabled: Config.options.policies.ai !== 0

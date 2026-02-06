@@ -35,7 +35,7 @@ StyledPopup {
     ColumnLayout {
         id: columnLayout
         anchors.centerIn: parent
-        spacing: 4
+        spacing: 4 * Appearance.uiScale
 
         StyledPopupHeaderRow {
             icon: "calendar_month"
@@ -59,7 +59,7 @@ StyledPopup {
                 value: ""
             }
 
-            StyledText {
+            BarText {
                 horizontalAlignment: Text.AlignLeft
                 wrapMode: Text.Wrap
                 color: Appearance.colors.colOnSurfaceVariant

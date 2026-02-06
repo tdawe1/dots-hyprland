@@ -3,13 +3,14 @@ import QtQuick.Layouts
 
 import qs.modules.common
 import qs.modules.common.widgets
+import qs.modules.ii.bar
 
 Rectangle {
     id: root
     radius: Appearance.rounding.small
     color: Appearance.colors.colSurfaceContainerHigh
-    implicitWidth: columnLayout.implicitWidth + 14 * 2
-    implicitHeight: columnLayout.implicitHeight + 14 * 2
+    implicitWidth: columnLayout.implicitWidth + (14 * Appearance.uiScale * 2)
+    implicitHeight: columnLayout.implicitHeight + (14 * Appearance.uiScale * 2)
     Layout.fillWidth: parent
 
     property alias title: title.text
@@ -19,7 +20,7 @@ Rectangle {
     ColumnLayout {
         id: columnLayout
         anchors.fill: parent
-        spacing: -10
+        spacing: -10 * Appearance.uiScale
         RowLayout {
             Layout.alignment: Qt.AlignHCenter
             MaterialSymbol {
@@ -28,13 +29,13 @@ Rectangle {
                 iconSize: Appearance.font.pixelSize.normal
                 color: Appearance.colors.colOnSurfaceVariant
             }
-            StyledText {
+            BarText {
                 id: title
                 font.pixelSize: Appearance.font.pixelSize.smaller
                 color: Appearance.colors.colOnSurfaceVariant
             }
         }
-        StyledText {
+        BarText {
             id: value
             Layout.alignment: Qt.AlignHCenter
             font.pixelSize: Appearance.font.pixelSize.small

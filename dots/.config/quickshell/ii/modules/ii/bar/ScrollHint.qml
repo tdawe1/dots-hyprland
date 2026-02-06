@@ -1,5 +1,7 @@
 import qs.modules.common
 import qs.modules.common.widgets
+import qs.modules.common.functions
+import qs.modules.ii.bar
 import QtQuick
 
 Revealer { // Scroll hint
@@ -39,21 +41,27 @@ Revealer { // Scroll hint
             anchors {
                 fill: parent
             }
-            spacing: -5
+            spacing: -5 * Appearance.uiScale
             MaterialSymbol {
                 text: "keyboard_arrow_up"
-                iconSize: 14
-                color: Appearance.colors.colSubtext
+                iconSize: 14 * Appearance.uiScale
+                color: BarStyle.isLight
+                    ? ColorUtils.mix(Appearance.colors.colSubtext, BarStyle.accentPink, 0.75)
+                    : Appearance.colors.colSubtext
             }
             MaterialSymbol {
                 text: root.icon
-                iconSize: 14
-                color: Appearance.colors.colSubtext
+                iconSize: 14 * Appearance.uiScale
+                color: BarStyle.isLight
+                    ? ColorUtils.mix(Appearance.colors.colSubtext, BarStyle.accentPink, 0.75)
+                    : Appearance.colors.colSubtext
             }
             MaterialSymbol {
                 text: "keyboard_arrow_down"
-                iconSize: 14
-                color: Appearance.colors.colSubtext
+                iconSize: 14 * Appearance.uiScale
+                color: BarStyle.isLight
+                    ? ColorUtils.mix(Appearance.colors.colSubtext, BarStyle.accentPink, 0.75)
+                    : Appearance.colors.colSubtext
             }
         }
     }

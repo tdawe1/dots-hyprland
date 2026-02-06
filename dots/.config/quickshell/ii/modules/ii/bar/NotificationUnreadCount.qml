@@ -2,13 +2,17 @@ import QtQuick
 import qs.services
 import qs.modules.common
 import qs.modules.common.widgets
+import qs.modules.common.functions
+import qs.modules.ii.bar
 
 MaterialSymbol {
     id: root
     readonly property bool showUnreadCount: Config.options.bar.indicators.notifications.showUnreadCount
     text: Notifications.silent ? "notifications_paused" : "notifications"
     iconSize: Appearance.font.pixelSize.larger
-    color: rightSidebarButton.colText
+    color: BarStyle.isLight
+        ? ColorUtils.mix(rightSidebarButton.colText, BarStyle.accentPink, 0.75)
+        : rightSidebarButton.colText
 
     Rectangle {
         id: notifPing
@@ -26,7 +30,7 @@ MaterialSymbol {
         implicitHeight: root.showUnreadCount ? Math.max(notificationCounterText.implicitWidth, notificationCounterText.implicitHeight) : 8
         implicitWidth: implicitHeight
 
-        StyledText {
+        BarText {
             id: notificationCounterText
             visible: root.showUnreadCount
             anchors.centerIn: parent

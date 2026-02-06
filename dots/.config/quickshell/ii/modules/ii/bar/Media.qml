@@ -3,6 +3,8 @@ import qs.modules.common.widgets
 import qs.services
 import qs
 import qs.modules.common.functions
+import qs.modules.ii.bar
+import qs.modules.ii.bar
 
 import QtQuick
 import QtQuick.Layouts
@@ -18,6 +20,8 @@ Item {
     Layout.fillHeight: true
     implicitWidth: rowLayout.implicitWidth + rowLayout.spacing * 2
     implicitHeight: Appearance.sizes.barHeight
+
+    BarPillBackground { contentItem: rowLayout }
 
     Timer {
         running: activePlayer?.playbackState == MprisPlaybackState.Playing
@@ -45,7 +49,7 @@ Item {
     RowLayout { // Real content
         id: rowLayout
 
-        spacing: 4
+        spacing: 4 * Appearance.uiScale
         anchors.fill: parent
 
         ClippedFilledCircularProgress {
@@ -53,8 +57,10 @@ Item {
             Layout.alignment: Qt.AlignVCenter
             lineWidth: Appearance.rounding.unsharpen
             value: activePlayer?.position / activePlayer?.length
-            implicitSize: 20
-            colPrimary: Appearance.colors.colOnSecondaryContainer
+            implicitSize: 20 * Appearance.uiScale
+            colPrimary: BarStyle.isLight
+                ? ColorUtils.mix(Appearance.colors.colOnSecondaryContainer, BarStyle.accentPink, 0.75)
+                : Appearance.colors.colOnSecondaryContainer
             enableAnimation: false
 
             Item {
@@ -67,12 +73,14 @@ Item {
                     fill: 1
                     text: activePlayer?.isPlaying ? "pause" : "music_note"
                     iconSize: Appearance.font.pixelSize.normal
-                    color: Appearance.m3colors.m3onSecondaryContainer
+                    color: BarStyle.isLight
+                        ? ColorUtils.mix(Appearance.m3colors.m3onSecondaryContainer, BarStyle.accentPink, 0.75)
+                        : Appearance.m3colors.m3onSecondaryContainer
                 }
             }
         }
 
-        StyledText {
+        BarText {
             visible: Config.options.bar.verbose
             width: rowLayout.width - (CircularProgress.size + rowLayout.spacing * 2)
             Layout.alignment: Qt.AlignVCenter
@@ -84,6 +92,10 @@ Item {
             text: `${cleanedTitle}${activePlayer?.trackArtist ? ' • ' + activePlayer.trackArtist : ''}`
         }
 
+    }
+
+    BarBloom {
+        target: rowLayout
     }
 
 }
