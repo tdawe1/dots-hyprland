@@ -14,17 +14,17 @@ StyledPopup {
         anchors.centerIn: parent
         implicitWidth: Math.max(header.implicitWidth, gridLayout.implicitWidth)
         implicitHeight: gridLayout.implicitHeight
-        spacing: 5
+        spacing: 5 * Appearance.uiScale
 
         // Header
         ColumnLayout {
             id: header
             Layout.alignment: Qt.AlignHCenter
-            spacing: 2
+            spacing: 2 * Appearance.uiScale
 
             RowLayout {
                 Layout.alignment: Qt.AlignHCenter
-                spacing: 6
+                spacing: 6 * Appearance.uiScale
 
                 MaterialSymbol {
                     fill: 0
@@ -34,7 +34,7 @@ StyledPopup {
                     color: Appearance.colors.colOnSurfaceVariant
                 }
 
-                StyledText {
+                BarText {
                     text: Weather.data.city
                     font {
                         weight: Font.Medium
@@ -43,7 +43,7 @@ StyledPopup {
                     color: Appearance.colors.colOnSurfaceVariant
                 }
             }
-            StyledText {
+            BarText {
                 id: temp
                 font.pixelSize: Appearance.font.pixelSize.smaller
                 color: Appearance.colors.colOnSurfaceVariant
@@ -55,8 +55,8 @@ StyledPopup {
         GridLayout {
             id: gridLayout
             columns: 2
-            rowSpacing: 5
-            columnSpacing: 5
+            rowSpacing: 5 * Appearance.uiScale
+            columnSpacing: 5 * Appearance.uiScale
             uniformCellWidths: true
 
             WeatherCard {
@@ -102,7 +102,7 @@ StyledPopup {
         }
 
         // Footer: last refresh
-        StyledText {
+        BarText {
             Layout.alignment: Qt.AlignHCenter
             text: Translation.tr("Last refresh: %1").arg(Weather.data.lastRefresh)
             font {
