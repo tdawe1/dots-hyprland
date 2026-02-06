@@ -1,3 +1,4 @@
+import qs.modules.ii.bar
 import qs.modules.ii.bar.weather
 import QtQuick
 import QtQuick.Layouts
@@ -41,15 +42,31 @@ Item { // Bar content region
             fill: parent
             margins: Config.options.bar.cornerStyle === 1 ? (Appearance.sizes.hyprlandGapsOut) : 0 // idk why but +1 is needed
         }
-        color: Config.options.bar.showBackground ? Appearance.colors.colLayer0 : "transparent"
+        color: Config.options.bar.showBackground ? BarStyle.barBackground : "transparent"
         radius: Config.options.bar.cornerStyle === 1 ? Appearance.rounding.windowRounding : 0
         border.width: Config.options.bar.cornerStyle === 1 ? 1 : 0
-        border.color: Appearance.colors.colLayer0Border
+        border.color: BarStyle.barBorder
+
+        Rectangle {
+            id: barInnerShade
+            anchors.fill: parent
+            anchors.margins: Math.max(1, barBackground.border.width)
+            radius: Math.max(0, barBackground.radius - barBackground.border.width)
+            visible: Config.options.bar.showBackground && BarStyle.isLight
+            gradient: Gradient {
+                GradientStop { position: 0.0; color: BarStyle.innerShadeEdge }
+                GradientStop { position: 0.5; color: BarStyle.innerShadeMid }
+                GradientStop { position: 1.0; color: BarStyle.innerShadeEdge }
+            }
+        }
     }
 
-    FocusedScrollMouseArea { // Left side | scroll to change brightness
-        id: barLeftSideMouseArea
+    Item {
+        id: contentLayer
+        anchors.fill: parent
 
+        FocusedScrollMouseArea { // Left side | scroll to change brightness
+            id: barLeftSideMouseArea
         anchors {
             top: parent.top
             bottom: parent.bottom
@@ -77,10 +94,10 @@ Item { // Bar content region
             anchors.verticalCenter: parent.verticalCenter
         }
 
-        RowLayout {
-            id: leftSectionRowLayout
-            anchors.fill: parent
-            spacing: 0
+            RowLayout {
+                id: leftSectionRowLayout
+                anchors.fill: parent
+                spacing: 0
 
             LeftSidebarButton { // Left sidebar button
                 id: leftSidebarButton
@@ -90,28 +107,30 @@ Item { // Bar content region
             }
 
             ActiveWindow {
-                Layout.leftMargin: 10 + (leftSidebarButton.visible ? 0 : Appearance.rounding.screenRounding)
+                Layout.leftMargin: (10 * Appearance.uiScale) + (leftSidebarButton.visible ? 0 : Appearance.rounding.screenRounding)
                 Layout.rightMargin: Appearance.rounding.screenRounding
                 Layout.fillWidth: true
                 Layout.fillHeight: true
                 visible: root.useShortenedForm === 0
             }
+            }
         }
-    }
 
-    Row { // Middle section
-        id: middleSection
-        anchors {
-            top: parent.top
-            bottom: parent.bottom
-            horizontalCenter: parent.horizontalCenter
-        }
-        spacing: 4
+        Row { // Middle section
+            id: middleSection
+            anchors {
+                top: parent.top
+                bottom: parent.bottom
+                horizontalCenter: parent.horizontalCenter
+            }
+            spacing: 4 * Appearance.uiScale
 
         BarGroup {
             id: leftCenterGroup
             anchors.verticalCenter: parent.verticalCenter
             implicitWidth: root.centerSideModuleWidth
+            showBackground: false
+            padding: 0
 
             Resources {
                 alwaysShowAllResources: root.useShortenedForm === 2
@@ -131,7 +150,8 @@ Item { // Bar content region
         BarGroup {
             id: middleCenterGroup
             anchors.verticalCenter: parent.verticalCenter
-            padding: workspacesWidget.widgetPadding
+            padding: 0
+            showBackground: false
 
             Workspaces {
                 id: workspacesWidget
@@ -167,6 +187,8 @@ Item { // Bar content region
             BarGroup {
                 id: rightCenterGroupContent
                 anchors.fill: parent
+                showBackground: false
+                padding: 0
 
                 ClockWidget {
                     showDate: (Config.options.bar.verbose && root.useShortenedForm < 2)
@@ -185,54 +207,60 @@ Item { // Bar content region
                 }
             }
         }
-    }
-
-    FocusedScrollMouseArea { // Right side | scroll to change volume
-        id: barRightSideMouseArea
-
-        anchors {
-            top: parent.top
-            bottom: parent.bottom
-            left: middleSection.right
-            right: parent.right
         }
-        implicitWidth: rightSectionRowLayout.implicitWidth
-        implicitHeight: Appearance.sizes.baseBarHeight
 
-        onScrollDown: Audio.decrementVolume();
-        onScrollUp: Audio.incrementVolume();
-        onMovedAway: GlobalStates.osdVolumeOpen = false;
-        onPressed: event => {
-            if (event.button === Qt.LeftButton) {
-                GlobalStates.sidebarRightOpen = !GlobalStates.sidebarRightOpen;
+        FocusedScrollMouseArea { // Right side | scroll to change volume
+            id: barRightSideMouseArea
+
+            anchors {
+                top: parent.top
+                bottom: parent.bottom
+                left: middleSection.right
+                right: parent.right
             }
-        }
+            implicitWidth: rightSectionRowLayout.implicitWidth
+            implicitHeight: Appearance.sizes.baseBarHeight
 
-        // Visual content
-        ScrollHint {
-            reveal: barRightSideMouseArea.hovered
-            icon: "volume_up"
-            tooltipText: Translation.tr("Scroll to change volume")
-            side: "right"
-            anchors.right: parent.right
-            anchors.verticalCenter: parent.verticalCenter
-        }
+            onScrollDown: Audio.decrementVolume();
+            onScrollUp: Audio.incrementVolume();
+            onMovedAway: GlobalStates.osdVolumeOpen = false;
+            onPressed: event => {
+                if (event.button === Qt.LeftButton) {
+                    GlobalStates.sidebarRightOpen = !GlobalStates.sidebarRightOpen;
+                }
+            }
 
-        RowLayout {
-            id: rightSectionRowLayout
-            anchors.fill: parent
-            spacing: 5
-            layoutDirection: Qt.RightToLeft
+            // Visual content
+            ScrollHint {
+                reveal: barRightSideMouseArea.hovered
+                icon: "volume_up"
+                tooltipText: Translation.tr("Scroll to change volume")
+                side: "right"
+                anchors.right: parent.right
+                anchors.verticalCenter: parent.verticalCenter
+            }
+
+            RowLayout {
+                id: rightSectionRowLayout
+                anchors.fill: parent
+                spacing: 5 * Appearance.uiScale
+                layoutDirection: Qt.RightToLeft
 
             RippleButton { // Right sidebar button
                 id: rightSidebarButton
+
+                BarShadow {
+                    target: rightSidebarButton
+                    visible: BarStyle.shadowVisible
+                    z: -1
+                }
 
                 Layout.alignment: Qt.AlignRight | Qt.AlignVCenter
                 Layout.rightMargin: Appearance.rounding.screenRounding
                 Layout.fillWidth: false
 
-                implicitWidth: indicatorsRowLayout.implicitWidth + 10 * 2
-                implicitHeight: indicatorsRowLayout.implicitHeight + 5 * 2
+                implicitWidth: indicatorsRowLayout.implicitWidth + (10 * Appearance.uiScale * 2)
+                implicitHeight: indicatorsRowLayout.implicitHeight + (5 * Appearance.uiScale * 2)
 
                 buttonRadius: Appearance.rounding.full
                 colBackground: barRightSideMouseArea.hovered ? Appearance.colors.colLayer1Hover : ColorUtils.transparentize(Appearance.colors.colLayer1Hover, 1)
@@ -255,7 +283,7 @@ Item { // Bar content region
                 RowLayout {
                     id: indicatorsRowLayout
                     anchors.centerIn: parent
-                    property real realSpacing: 15
+                    property real realSpacing: 15 * Appearance.uiScale
                     spacing: 0
 
                     Revealer {
@@ -318,6 +346,7 @@ Item { // Bar content region
             }
 
             SysTray {
+                id: sysTray
                 visible: root.useShortenedForm === 0
                 Layout.fillWidth: false
                 Layout.fillHeight: true
@@ -331,13 +360,18 @@ Item { // Bar content region
 
             // Weather
             Loader {
-                Layout.leftMargin: 4
+                id: weatherLoader
+                Layout.leftMargin: 8 * Appearance.uiScale
                 active: Config.options.bar.weather.enable
 
                 sourceComponent: BarGroup {
+                    showBackground: false
+                    padding: 0
                     WeatherBar {}
                 }
             }
         }
+
     }
+}
 }
