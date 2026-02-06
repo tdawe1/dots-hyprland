@@ -1,7 +1,5 @@
 import qs.modules.common
 import qs.modules.common.widgets
-import qs.modules.common.functions
-import qs.modules.ii.bar
 import qs.services
 import QtQuick
 import QtQuick.Layouts
@@ -19,8 +17,6 @@ MouseArea {
     implicitHeight: Appearance.sizes.barHeight
 
     hoverEnabled: !Config.options.bar.tooltips.clickToShow
-
-    BarPillBackground { }
 
     ClippedProgressBar {
         id: batteryProgress
@@ -50,21 +46,14 @@ MouseArea {
                     text: "bolt"
                     iconSize: Appearance.font.pixelSize.smaller
                     visible: isCharging && percentage < 1 // TODO: animation
-                    color: BarStyle.isLight
-                        ? ColorUtils.mix(BarStyle.accentPink, Appearance.colors.colOnSecondaryContainer, 0.3)
-                        : Appearance.colors.colOnSecondaryContainer
                 }
-                BarText {
+                StyledText {
                     Layout.alignment: Qt.AlignVCenter
                     font: batteryProgress.font
                     text: batteryProgress.text
                 }
             }
         }
-    }
-
-    BarBloom {
-        target: batteryProgress
     }
 
     BatteryPopup {

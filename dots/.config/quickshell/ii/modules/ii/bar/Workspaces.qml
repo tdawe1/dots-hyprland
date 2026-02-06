@@ -4,7 +4,6 @@ import qs.modules.common
 import qs.modules.common.models
 import qs.modules.common.widgets
 import qs.modules.common.functions
-import qs.modules.ii.bar
 import QtQuick
 import QtQuick.Controls
 import Quickshell
@@ -23,15 +22,13 @@ Item {
     readonly property int workspacesShown: Config.options.bar.workspaces.shown
     readonly property int workspaceGroup: Math.floor((monitor?.activeWorkspace?.id - 1) / root.workspacesShown)
     property list<bool> workspaceOccupied: []
-    property int widgetPadding: Math.round(4 * Appearance.uiScale)
-    property int workspaceButtonWidth: Math.round(26 * Appearance.uiScale)
-    property int workspaceHighlightPadding: Math.round(1 * Appearance.uiScale)
-    property int workspaceCellWidth: workspaceButtonWidth + workspaceHighlightPadding * 2
-    property real activeWorkspaceMargin: 2 * Appearance.uiScale
+    property int widgetPadding: 4
+    property int workspaceButtonWidth: 26
+    property real activeWorkspaceMargin: 2
     property real workspaceIconSize: workspaceButtonWidth * 0.69
     property real workspaceIconSizeShrinked: workspaceButtonWidth * 0.55
     property real workspaceIconOpacityShrinked: 1
-    property real workspaceIconMarginShrinked: -4 * Appearance.uiScale
+    property real workspaceIconMarginShrinked: -4
     property int workspaceIndexInGroup: (monitor?.activeWorkspace?.id - 1) % root.workspacesShown
 
     property bool showNumbers: false
@@ -83,10 +80,8 @@ Item {
         updateWorkspaceOccupied();
     }
 
-    implicitWidth: root.vertical ? Appearance.sizes.verticalBarWidth : (root.workspaceCellWidth * root.workspacesShown)
+    implicitWidth: root.vertical ? Appearance.sizes.verticalBarWidth : (root.workspaceButtonWidth * root.workspacesShown)
     implicitHeight: root.vertical ? (root.workspaceButtonWidth * root.workspacesShown) : Appearance.sizes.barHeight
-
-    BarPillBackground { contentItem: workspaceGrid }
 
     // Scroll to switch workspaces
     WheelHandler {
@@ -111,7 +106,6 @@ Item {
 
     // Workspaces - background
     Grid {
-        id: workspaceGrid
         z: 1
         anchors.centerIn: parent
 
@@ -125,8 +119,8 @@ Item {
 
             Rectangle {
                 z: 1
-                implicitWidth: workspaceCellWidth
-                implicitHeight: workspaceCellWidth
+                implicitWidth: workspaceButtonWidth
+                implicitHeight: workspaceButtonWidth
                 radius: (width / 2)
                 property var previousOccupied: (workspaceOccupied[index-1] && !(!activeWindow?.activated && monitor?.activeWorkspace?.id === index))
                 property var rightOccupied: (workspaceOccupied[index+1] && !(!activeWindow?.activated && monitor?.activeWorkspace?.id === index+2))
@@ -138,7 +132,7 @@ Item {
                 topRightRadius: root.vertical ? radiusPrev : radiusNext
                 bottomRightRadius: radiusNext
                 
-                color: ColorUtils.transparentize(Appearance.colors.colPrimaryContainer, 0.35)
+                color: ColorUtils.transparentize(Appearance.m3colors.m3secondaryContainer, 0.4)
                 opacity: (workspaceOccupied[index] && !(!activeWindow?.activated && monitor?.activeWorkspace?.id === index+1)) ? 1 : 0
 
                 Behavior on opacity {
@@ -158,10 +152,6 @@ Item {
 
     }
 
-    BarBloom {
-        target: workspaceGrid
-    }
-
     // Active workspace
     Rectangle {
         z: 2
@@ -178,9 +168,9 @@ Item {
             id: idxPair
             index: root.workspaceIndexInGroup
         }
-        property real indicatorPosition: Math.min(idxPair.idx1, idxPair.idx2) * workspaceCellWidth + root.activeWorkspaceMargin
-        property real indicatorLength: Math.abs(idxPair.idx1 - idxPair.idx2) * workspaceCellWidth + workspaceCellWidth - root.activeWorkspaceMargin * 2
-        property real indicatorThickness: workspaceCellWidth - root.activeWorkspaceMargin * 2
+        property real indicatorPosition: Math.min(idxPair.idx1, idxPair.idx2) * workspaceButtonWidth + root.activeWorkspaceMargin
+        property real indicatorLength: Math.abs(idxPair.idx1 - idxPair.idx2) * workspaceButtonWidth + workspaceButtonWidth - root.activeWorkspaceMargin * 2
+        property real indicatorThickness: workspaceButtonWidth - root.activeWorkspaceMargin * 2
 
         x: root.vertical ? null : indicatorPosition
         implicitWidth: root.vertical ? indicatorThickness : indicatorLength
@@ -209,17 +199,17 @@ Item {
                 implicitHeight: vertical ? Appearance.sizes.verticalBarWidth : Appearance.sizes.barHeight
                 implicitWidth: vertical ? Appearance.sizes.verticalBarWidth : Appearance.sizes.verticalBarWidth
                 onPressed: Hyprland.dispatch(`workspace ${workspaceValue}`)
-                width: vertical ? undefined : workspaceCellWidth
-                height: vertical ? workspaceCellWidth : undefined
+                width: vertical ? undefined : workspaceButtonWidth
+                height: vertical ? workspaceButtonWidth : undefined
 
                 background: Item {
                     id: workspaceButtonBackground
-                    implicitWidth: workspaceCellWidth
-                    implicitHeight: workspaceCellWidth
+                    implicitWidth: workspaceButtonWidth
+                    implicitHeight: workspaceButtonWidth
                     property var biggestWindow: HyprlandData.biggestWindowForWorkspace(button.workspaceValue)
                     property var mainAppIconSource: Quickshell.iconPath(AppSearch.guessIcon(biggestWindow?.class), "image-missing")
 
-                    BarText { // Workspace number text
+                    StyledText { // Workspace number text
                         opacity: root.showNumbers
                             || ((Config.options?.bar.workspaces.alwaysShowNumbers && (!Config.options?.bar.workspaces.showAppIcons || !workspaceButtonBackground.biggestWindow || root.showNumbers))
                             || (root.showNumbers && !Config.options?.bar.workspaces.showAppIcons)
@@ -235,9 +225,9 @@ Item {
                         }
                         text: Config.options?.bar.workspaces.numberMap[button.workspaceValue - 1] || button.workspaceValue
                         elide: Text.ElideRight
-                        color: (monitor?.activeWorkspace?.id == button.workspaceValue) ?
-                            Appearance.m3colors.m3onPrimary :
-                            (workspaceOccupied[index] ? Appearance.m3colors.m3onSecondaryContainer :
+                        color: (monitor?.activeWorkspace?.id == button.workspaceValue) ? 
+                            Appearance.m3colors.m3onPrimary : 
+                            (workspaceOccupied[index] ? Appearance.m3colors.m3onSecondaryContainer : 
                                 Appearance.colors.colOnLayer1Inactive)
 
                         Behavior on opacity {
@@ -255,9 +245,9 @@ Item {
                         width: workspaceButtonWidth * 0.18
                         height: width
                         radius: width / 2
-                        color: (monitor?.activeWorkspace?.id == button.workspaceValue) ?
-                            Appearance.m3colors.m3onPrimary :
-                            (workspaceOccupied[index] ? Appearance.m3colors.m3onSecondaryContainer :
+                        color: (monitor?.activeWorkspace?.id == button.workspaceValue) ? 
+                            Appearance.m3colors.m3onPrimary : 
+                            (workspaceOccupied[index] ? Appearance.m3colors.m3onSecondaryContainer : 
                                 Appearance.colors.colOnLayer1Inactive)
 
                         Behavior on opacity {
@@ -266,8 +256,8 @@ Item {
                     }
                     Item { // Main app icon
                         anchors.centerIn: parent
-                        width: workspaceCellWidth
-                        height: workspaceCellWidth
+                        width: workspaceButtonWidth
+                        height: workspaceButtonWidth
                         opacity: !Config.options?.bar.workspaces.showAppIcons ? 0 :
                             (workspaceButtonBackground.biggestWindow && !root.showNumbers && Config.options?.bar.workspaces.showAppIcons) ? 
                             1 : workspaceButtonBackground.biggestWindow ? workspaceIconOpacityShrinked : 0

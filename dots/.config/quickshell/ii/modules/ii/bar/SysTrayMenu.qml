@@ -166,7 +166,7 @@ PopupWindow {
                         iconSize: 20
                         text: "chevron_left"
                     }
-                    BarText {
+                    StyledText {
                         Layout.fillWidth: true
                         text: Translation.tr("Back")
                     }

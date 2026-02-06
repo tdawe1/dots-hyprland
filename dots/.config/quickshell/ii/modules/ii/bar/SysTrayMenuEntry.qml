@@ -107,7 +107,7 @@ RippleButton {
             }
         }
 
-        BarText {
+        StyledText {
             id: label
             text: root.menuEntry.text
             font.pixelSize: Appearance.font.pixelSize.smallie

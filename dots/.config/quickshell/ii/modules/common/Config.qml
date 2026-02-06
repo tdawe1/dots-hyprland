@@ -106,7 +106,6 @@ Singleton {
 
             property JsonObject appearance: JsonObject {
                 property bool extraBackgroundTint: true
-                property real uiScale: 1.0
                 property int fakeScreenRounding: 2 // 0: None | 1: Always | 2: When not fullscreen
                 property JsonObject fonts: JsonObject {
                     property string main: "Google Sans Flex"
@@ -233,10 +232,6 @@ Singleton {
                         property bool enable: true
                         property int delay: 140
                     }
-                }
-                property JsonObject style: JsonObject {
-                    property string mode: "auto" // "auto", "light", "dark"
-                    property bool staticBackground: true
                 }
                 property bool bottom: false // Instead of top
                 property int cornerStyle: 0 // 0: Hug | 1: Float | 2: Plain rectangle

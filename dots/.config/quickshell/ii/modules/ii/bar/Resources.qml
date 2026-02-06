@@ -1,6 +1,5 @@
 import qs.modules.common
 import qs.services
-import qs.modules.ii.bar
 import QtQuick
 import QtQuick.Layouts
 
@@ -12,15 +11,13 @@ MouseArea {
     implicitHeight: Appearance.sizes.barHeight
     hoverEnabled: !Config.options.bar.tooltips.clickToShow
 
-    BarPillBackground { contentItem: rowLayout }
-
     RowLayout {
         id: rowLayout
 
-        spacing: 4 * Appearance.uiScale
+        spacing: 0
         anchors.fill: parent
-        anchors.leftMargin: 4 * Appearance.uiScale
-        anchors.rightMargin: 4 * Appearance.uiScale
+        anchors.leftMargin: 4
+        anchors.rightMargin: 4
 
         Resource {
             iconName: "memory"
@@ -34,7 +31,7 @@ MouseArea {
             shown: (Config.options.bar.resources.alwaysShowSwap && percentage > 0) || 
                 (MprisController.activePlayer?.trackTitle == null) ||
                 root.alwaysShowAllResources
-            Layout.leftMargin: shown ? 6 * Appearance.uiScale : 0
+            Layout.leftMargin: shown ? 6 : 0
             warningThreshold: Config.options.bar.resources.swapWarningThreshold
         }
 
@@ -44,14 +41,10 @@ MouseArea {
             shown: Config.options.bar.resources.alwaysShowCpu || 
                 !(MprisController.activePlayer?.trackTitle?.length > 0) ||
                 root.alwaysShowAllResources
-            Layout.leftMargin: shown ? 6 * Appearance.uiScale : 0
+            Layout.leftMargin: shown ? 6 : 0
             warningThreshold: Config.options.bar.resources.cpuWarningThreshold
         }
 
-    }
-
-    BarBloom {
-        target: rowLayout
     }
 
     ResourcesPopup {

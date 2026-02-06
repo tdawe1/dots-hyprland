@@ -14,18 +14,18 @@ StyledPopup {
 
     Row {
         anchors.centerIn: parent
-        spacing: 12 * Appearance.uiScale
+        spacing: 12
 
         Column {
             anchors.top: parent.top
-            spacing: 8 * Appearance.uiScale
+            spacing: 8
 
             StyledPopupHeaderRow {
                 icon: "memory"
                 label: "RAM"
             }
             Column {
-                spacing: 4 * Appearance.uiScale
+                spacing: 4
                 StyledPopupValueRow {
                     icon: "clock_loader_60"
                     label: Translation.tr("Used:")
@@ -47,14 +47,14 @@ StyledPopup {
         Column {
             visible: ResourceUsage.swapTotal > 0
             anchors.top: parent.top
-            spacing: 8 * Appearance.uiScale
+            spacing: 8
 
             StyledPopupHeaderRow {
                 icon: "swap_horiz"
                 label: "Swap"
             }
             Column {
-                spacing: 4 * Appearance.uiScale
+                spacing: 4
                 StyledPopupValueRow {
                     icon: "clock_loader_60"
                     label: Translation.tr("Used:")
@@ -75,14 +75,14 @@ StyledPopup {
 
         Column {
             anchors.top: parent.top
-            spacing: 8 * Appearance.uiScale
+            spacing: 8
 
             StyledPopupHeaderRow {
                 icon: "planner_review"
                 label: "CPU"
             }
             Column {
-                spacing: 4 * Appearance.uiScale
+                spacing: 4
                 StyledPopupValueRow {
                     icon: "bolt"
                     label: Translation.tr("Load:")

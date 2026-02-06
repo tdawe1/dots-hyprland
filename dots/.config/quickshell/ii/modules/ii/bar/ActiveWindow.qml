@@ -1,7 +1,6 @@
 import qs.services
 import qs.modules.common
 import qs.modules.common.widgets
-import qs.modules.ii.bar
 import QtQuick
 import QtQuick.Layouts
 import Quickshell
@@ -19,8 +18,6 @@ Item {
 
     implicitWidth: colLayout.implicitWidth
 
-    BarPillBackground { contentItem: colLayout }
-
     ColumnLayout {
         id: colLayout
 
@@ -29,7 +26,7 @@ Item {
         anchors.right: parent.right
         spacing: -4
 
-        BarText {
+        StyledText {
             Layout.fillWidth: true
             font.pixelSize: Appearance.font.pixelSize.smaller
             color: Appearance.colors.colSubtext
@@ -40,7 +37,7 @@ Item {
 
         }
 
-        BarText {
+        StyledText {
             Layout.fillWidth: true
             font.pixelSize: Appearance.font.pixelSize.small
             color: Appearance.colors.colOnLayer0
@@ -50,10 +47,6 @@ Item {
                 (root.biggestWindow?.title) ?? `${Translation.tr("Workspace")} ${monitor?.activeWorkspace?.id ?? 1}`
         }
 
-    }
-
-    BarBloom {
-        target: colLayout
     }
 
 }

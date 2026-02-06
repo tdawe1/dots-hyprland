@@ -7,7 +7,7 @@ Row {
     id: root
     required property var icon
     required property var label
-    spacing: 5 * Appearance.uiScale
+    spacing: 5
 
     MaterialSymbol {
         anchors.verticalCenter: parent.verticalCenter
@@ -18,7 +18,7 @@ Row {
         color: Appearance.colors.colOnSurfaceVariant
     }
 
-    BarText {
+    StyledText {
         anchors.verticalCenter: parent.verticalCenter
         text: root.label
         font {

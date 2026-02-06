@@ -1,8 +1,6 @@
 import qs
 import qs.modules.common
 import qs.modules.common.widgets
-import qs.modules.common.functions
-import qs.modules.ii.bar
 import QtQuick
 import QtQuick.Layouts
 import Quickshell
@@ -13,16 +11,13 @@ import Quickshell.Services.UPower
 Item {
     id: root
     property bool borderless: Config.options.bar.borderless
-    property int utilIconSize: Math.round(Appearance.font.pixelSize.huge * 0.9)
     implicitWidth: rowLayout.implicitWidth + rowLayout.spacing * 2
-    implicitHeight: Appearance.sizes.barHeight
-
-    BarPillBackground { contentItem: rowLayout }
+    implicitHeight: rowLayout.implicitHeight
 
     RowLayout {
         id: rowLayout
 
-        spacing: 6 * Appearance.uiScale
+        spacing: 4
         anchors.centerIn: parent
 
         Loader {
@@ -35,10 +30,8 @@ Item {
                     horizontalAlignment: Qt.AlignHCenter
                     fill: 1
                     text: "screenshot_region"
-                    iconSize: root.utilIconSize
-                    color: BarStyle.isLight
-                        ? ColorUtils.mix(Appearance.colors.colOnLayer2, BarStyle.accentPink, 0.75)
-                        : Appearance.colors.colOnLayer2
+                    iconSize: Appearance.font.pixelSize.large
+                    color: Appearance.colors.colOnLayer2
                 }
             }
         }
@@ -53,10 +46,8 @@ Item {
                     horizontalAlignment: Qt.AlignHCenter
                     fill: 1
                     text: "videocam"
-                    iconSize: root.utilIconSize
-                    color: BarStyle.isLight
-                        ? ColorUtils.mix(Appearance.colors.colOnLayer2, BarStyle.accentPink, 0.75)
-                        : Appearance.colors.colOnLayer2
+                    iconSize: Appearance.font.pixelSize.large
+                    color: Appearance.colors.colOnLayer2
                 }
             }
         }
@@ -71,10 +62,8 @@ Item {
                     horizontalAlignment: Qt.AlignHCenter
                     fill: 1
                     text: "colorize"
-                    iconSize: root.utilIconSize
-                    color: BarStyle.isLight
-                        ? ColorUtils.mix(Appearance.colors.colOnLayer2, BarStyle.accentPink, 0.75)
-                        : Appearance.colors.colOnLayer2
+                    iconSize: Appearance.font.pixelSize.large
+                    color: Appearance.colors.colOnLayer2
                 }
             }
         }
@@ -89,10 +78,8 @@ Item {
                     horizontalAlignment: Qt.AlignHCenter
                     fill: 0
                     text: "keyboard"
-                    iconSize: root.utilIconSize
-                    color: BarStyle.isLight
-                        ? ColorUtils.mix(Appearance.colors.colOnLayer2, BarStyle.accentPink, 0.75)
-                        : Appearance.colors.colOnLayer2
+                    iconSize: Appearance.font.pixelSize.large
+                    color: Appearance.colors.colOnLayer2
                 }
             }
         }
@@ -107,10 +94,8 @@ Item {
                     horizontalAlignment: Qt.AlignHCenter
                     fill: 0
                     text: Pipewire.defaultAudioSource?.audio?.muted ? "mic_off" : "mic"
-                    iconSize: root.utilIconSize
-                    color: BarStyle.isLight
-                        ? ColorUtils.mix(Appearance.colors.colOnLayer2, BarStyle.accentPink, 0.75)
-                        : Appearance.colors.colOnLayer2
+                    iconSize: Appearance.font.pixelSize.large
+                    color: Appearance.colors.colOnLayer2
                 }
             }
         }
@@ -131,10 +116,8 @@ Item {
                     horizontalAlignment: Qt.AlignHCenter
                     fill: 0
                     text: Appearance.m3colors.darkmode ? "light_mode" : "dark_mode"
-                    iconSize: root.utilIconSize
-                    color: BarStyle.isLight
-                        ? ColorUtils.mix(Appearance.colors.colOnLayer2, BarStyle.accentPink, 0.75)
-                        : Appearance.colors.colOnLayer2
+                    iconSize: Appearance.font.pixelSize.large
+                    color: Appearance.colors.colOnLayer2
                 }
             }
         }
@@ -166,16 +149,10 @@ Item {
                         case PowerProfile.Balanced: return "airwave"
                         case PowerProfile.Performance: return "local_fire_department"
                     }
-                    iconSize: root.utilIconSize
-                    color: BarStyle.isLight
-                        ? ColorUtils.mix(Appearance.colors.colOnLayer2, BarStyle.accentPink, 0.75)
-                        : Appearance.colors.colOnLayer2
+                    iconSize: Appearance.font.pixelSize.large
+                    color: Appearance.colors.colOnLayer2
                 }
             }
         }
-    }
-
-    BarBloom {
-        target: rowLayout
     }
 }

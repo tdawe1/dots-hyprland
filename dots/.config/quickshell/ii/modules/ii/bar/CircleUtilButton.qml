@@ -5,12 +5,6 @@ import QtQuick
 RippleButton {
     id: button
 
-    BarShadow {
-        target: button
-        visible: BarStyle.shadowVisible
-        z: -1
-    }
-
     required default property Item content
     property bool extraActiveCondition: false
 

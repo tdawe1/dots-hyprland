@@ -6,13 +6,11 @@ import Quickshell.Services.SystemTray
 import qs.services
 import qs.modules.common
 import qs.modules.common.widgets
-import qs.modules.common.functions
-import qs.modules.ii.bar
 
 Item {
     id: root
     implicitWidth: gridLayout.implicitWidth
-    implicitHeight: Appearance.sizes.barHeight
+    implicitHeight: gridLayout.implicitHeight
     property bool vertical: false
     property bool invertSide: false
     property bool trayOverflowOpen: false
@@ -62,12 +60,10 @@ Item {
         }
     }
 
-    BarPillBackground { contentItem: gridLayout }
-
     GridLayout {
         id: gridLayout
         columns: root.vertical ? 1 : -1
-        anchors.centerIn: parent
+        anchors.fill: parent
         rowSpacing: 8
         columnSpacing: 15
 
@@ -93,9 +89,7 @@ Item {
                 iconSize: Appearance.font.pixelSize.larger
                 text: "expand_more"
                 horizontalAlignment: Text.AlignHCenter
-                color: BarStyle.isLight
-                    ? ColorUtils.mix(root.trayOverflowOpen ? Appearance.colors.colOnSecondaryContainer : Appearance.colors.colOnLayer2, BarStyle.accentPink, 0.75)
-                    : (root.trayOverflowOpen ? Appearance.colors.colOnSecondaryContainer : Appearance.colors.colOnLayer2)
+                color: root.trayOverflowOpen ? Appearance.colors.colOnSecondaryContainer : Appearance.colors.colOnLayer2
                 rotation: (root.trayOverflowOpen ? 180 : 0) - (90 * root.vertical) + (180 * root.invertSide)
                 Behavior on rotation {
                     animation: Appearance.animation.elementMoveFast.numberAnimation.createObject(this)
@@ -147,18 +141,12 @@ Item {
             }
         }
 
-        BarText {
+        StyledText {
             Layout.alignment: Qt.AlignVCenter | Qt.AlignHCenter
             font.pixelSize: Appearance.font.pixelSize.larger
-            color: BarStyle.isLight
-                ? ColorUtils.mix(Appearance.colors.colSubtext, BarStyle.accentPink, 0.75)
-                : Appearance.colors.colSubtext
+            color: Appearance.colors.colSubtext
             text: "•"
             visible: root.showSeparator && SystemTray.items.values.length > 0
         }
-    }
-
-    BarBloom {
-        target: gridLayout
     }
 }
