@@ -296,6 +296,45 @@ ContentPage {
 
         ConfigRow {
             ContentSubsection {
+                title: Translation.tr("Bar light/dark")
+
+                ConfigSelectionArray {
+                    currentValue: Config.options.bar.style.mode
+                    onSelected: newValue => {
+                        Config.options.bar.style.mode = newValue;
+                    }
+                    options: [
+                        {
+                            displayName: Translation.tr("Auto"),
+                            icon: "auto_mode",
+                            value: "auto"
+                        },
+                        {
+                            displayName: Translation.tr("Light"),
+                            icon: "light_mode",
+                            value: "light"
+                        },
+                        {
+                            displayName: Translation.tr("Dark"),
+                            icon: "dark_mode",
+                            value: "dark"
+                        }
+                    ]
+                }
+            }
+        }
+
+        ConfigSwitch {
+            buttonIcon: "palette"
+            text: Translation.tr("Static bar tint")
+            checked: Config.options.bar.style.staticBackground
+            onCheckedChanged: {
+                Config.options.bar.style.staticBackground = checked;
+            }
+        }
+
+        ConfigRow {
+            ContentSubsection {
                 title: Translation.tr("Screen round corner")
 
                 ConfigSelectionArray {
